@@ -15,6 +15,9 @@ class IngestDataParent:
         file_paths = self._get_all_data_file_paths()
         for file_path in file_paths[:1]:
             df = self._load_data(file_path)
+            df = self._clean_data(df)
+            self._save_data_in_db(df)
+
             print(df)
         # for file path in file paths
         # load into df
@@ -59,6 +62,15 @@ class IngestWeatherData(IngestDataParent):
         file_name = basename(file_path)
         weather_station = file_name.split(".txt")[0]
         return df.assign(weather_station=weather_station)
+
+    def _clean_data(self, df: DataFrame) -> DataFrame:
+        df["date"] = df["date"].apply(self._format_date)
+        return df
+
+    def _format_date(self, date: int) -> str:
+        date = str(date)
+        date = date[:4] + "-" + date[4:6] + "-" + date[6:]
+        return date
 
 
 class IngestYieldData(IngestDataParent):
