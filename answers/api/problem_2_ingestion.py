@@ -16,11 +16,10 @@ class IngestDataParent:
         for file_path in file_paths:
             df = self._load_data(file_path)
             df = self._clean_data(df)
-            # print(df)
-            # self._save_data_in_db(df)
+            self._save_data_in_db(df)
 
             # print(df)
-        print(df)
+        # print(df)
         # for file path in file paths
         # load into df
         # add any additional cols
@@ -67,12 +66,22 @@ class IngestWeatherData(IngestDataParent):
 
     def _clean_data(self, df: DataFrame) -> DataFrame:
         df["date"] = df["date"].apply(self._format_date)
+        df["max_temp_of_day"] = df["max_temp_of_day"].apply(self._convert_null_vals)
+        df["min_temp_of_day"] = df["min_temp_of_day"].apply(self._convert_null_vals)
+        df["precipitation_of_day"] = df["precipitation_of_day"].apply(
+            self._convert_null_vals
+        )
         return df
 
     def _format_date(self, date: int) -> str:
         date = str(date)
         date = date[:4] + "-" + date[4:6] + "-" + date[6:]
         return date
+
+    def _convert_null_vals(self, value: int):
+        if value == -9999:
+            return None
+        return value
 
 
 class IngestYieldData(IngestDataParent):
