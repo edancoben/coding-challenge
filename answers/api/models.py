@@ -7,14 +7,9 @@ from django.db import models
 class WeatherData(models.Model):
     class Meta:
         db_table = "weather_data"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["weather_station", "date"],
-                name="unique_date_per_station",
-            )
-        ]
+        unique_together = (("weather_station", "date"),)
 
-    weather_station = models.CharField(max_length=11)
+    weather_station = models.CharField(max_length=11, primary_key=True)
     date = models.DateField()
     max_temp_of_day = models.IntegerField(null=True)
     min_temp_of_day = models.IntegerField(null=True)

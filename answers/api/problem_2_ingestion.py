@@ -5,6 +5,7 @@ from .models import WeatherData, YieldData
 from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
+from sqlalchemy import create_engine
 
 
 class IngestDataParent:
@@ -17,15 +18,8 @@ class IngestDataParent:
             df = self._load_data(file_path)
             df = self._clean_data(df)
             self._save_data_in_db(df)
-
             # print(df)
-        # print(df)
-        # for file path in file paths
-        # load into df
-        # add any additional cols
-        # clean change -9999 to null
-        # save df into db one row at a time
-        pass
+        print(df)
 
     def _get_all_data_file_paths(self) -> list[str]:
         parent_path = Path(__file__).parents[2]
@@ -45,6 +39,12 @@ class IngestDataParent:
 
     def _clean_data(self, df: DataFrame) -> DataFrame:
         return df
+
+    def _save_data_in_db(self, df: DataFrame) -> int:
+        model = self.data_model
+        engine = create_engine("sqlite:///db.sqlite3")
+        # TODO find a shorter way to get table name
+        df.to_sql(model._meta.db_table, con=engine, if_exists="append")
 
 
 class IngestWeatherData(IngestDataParent):
