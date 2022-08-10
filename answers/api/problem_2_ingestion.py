@@ -14,7 +14,7 @@ class IngestDataParent:
 
     def run(self) -> None:
         file_paths = self._get_all_data_file_paths()
-        for file_path in file_paths:
+        for file_path in file_paths[:2]:
             df = self._load_data(file_path)
             df = self._clean_data(df)
             self._save_data_in_db(df)
