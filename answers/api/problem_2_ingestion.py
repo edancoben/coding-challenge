@@ -13,12 +13,14 @@ class IngestDataParent:
 
     def run(self) -> None:
         file_paths = self._get_all_data_file_paths()
-        for file_path in file_paths[:1]:
+        for file_path in file_paths:
             df = self._load_data(file_path)
             df = self._clean_data(df)
-            self._save_data_in_db(df)
+            # print(df)
+            # self._save_data_in_db(df)
 
-            print(df)
+            # print(df)
+        print(df)
         # for file path in file paths
         # load into df
         # add any additional cols
@@ -43,7 +45,7 @@ class IngestDataParent:
         return df
 
     def _clean_data(self, df: DataFrame) -> DataFrame:
-        pass
+        return df
 
 
 class IngestWeatherData(IngestDataParent):
@@ -51,7 +53,7 @@ class IngestWeatherData(IngestDataParent):
         self.data_model = WeatherData
         self.data_dir = data_dir
         self.col_names = [
-            "data",
+            "date",
             "max_temp_of_day",
             "min_temp_of_day",
             "precipitation_of_day",
