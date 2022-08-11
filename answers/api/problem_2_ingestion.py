@@ -107,5 +107,5 @@ class IngestYieldData(IngestDataParent):
         super().__init__()
 
     def _clean_data(self, df: DataFrame) -> DataFrame:
-        df.set_index(["year"], inplace=True)
+        # df.set_index(["year"], inplace=True)
         return df
