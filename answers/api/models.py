@@ -39,6 +39,6 @@ class WeatherAnalysis(models.Model):
 
     weather_station = models.CharField(max_length=11)
     year = models.IntegerField()
-    avg_max_temp_of_year = models.IntegerField(null=True)
-    avg_min_temp_of_year = models.IntegerField(null=True)
+    avg_max_temp_of_year = models.FloatField(null=True)
+    avg_min_temp_of_year = models.FloatField(null=True)
     total_precipitation_of_year = models.IntegerField(null=True)
