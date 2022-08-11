@@ -15,8 +15,8 @@ class Command(BaseCommand):
         weather_data_ingestor = IngestWeatherData("wx_data")
         weather_data_ingestor.run()
 
-        yield_data_ingestor = IngestYieldData("yld_data")
-        yield_data_ingestor.run()
+        # yield_data_ingestor = IngestYieldData("yld_data")
+        # yield_data_ingestor.run()
         end = time.time()
         print("elapsed time: ", end - start)
 
