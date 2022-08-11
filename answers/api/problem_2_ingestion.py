@@ -21,8 +21,6 @@ class IngestDataParent:
             df = self._clean_data(df)
             num_rows_saved = self._save_data_in_db(df)
             total_rows_saved += num_rows_saved
-            # print(df)
-        # print(df)
         print("total_rows_saved:", total_rows_saved)
 
     def _get_all_data_file_paths(self) -> list[str]:
@@ -49,12 +47,14 @@ class IngestDataParent:
         model = self.data_model
         engine = create_engine("sqlite:///db.sqlite3")
         # TODO find a shorter way to get table name
+        # TODO add proper logging
+        # TODO check the primary key year for yield data that the index flag isn't messing things up
         try:
             df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
-            # print("num rows saved:", len(df.index))
             num_rows_saved = len(df.index)
-        # except IntegrityError:
-        #     print("integrity error")
+        except IntegrityError as e:
+            # print("integrity error")
+            pass
         except Exception as e:
             # print(e)
             pass
