@@ -14,13 +14,16 @@ class IngestDataParent:
         pass
 
     def run(self) -> None:
+        total_rows_saved = 0
         file_paths = self._get_all_data_file_paths()
-        for file_path in file_paths[:2]:
+        for file_path in file_paths:
             df = self._load_data(file_path)
             df = self._clean_data(df)
-            self._save_data_in_db(df)
+            num_rows_saved = self._save_data_in_db(df)
+            total_rows_saved += num_rows_saved
             # print(df)
         # print(df)
+        print("total_rows_saved:", total_rows_saved)
 
     def _get_all_data_file_paths(self) -> list[str]:
         parent_path = Path(__file__).parents[2]
@@ -42,16 +45,20 @@ class IngestDataParent:
         return df
 
     def _save_data_in_db(self, df: DataFrame) -> int:
+        num_rows_saved = 0
         model = self.data_model
         engine = create_engine("sqlite:///db.sqlite3")
         # TODO find a shorter way to get table name
         try:
             df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
-        #     print("num rows saved:", len(df.index))
+            # print("num rows saved:", len(df.index))
+            num_rows_saved = len(df.index)
         # except IntegrityError:
         #     print("integrity error")
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
+        return num_rows_saved
 
 
 class IngestWeatherData(IngestDataParent):

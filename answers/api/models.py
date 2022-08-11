@@ -7,11 +7,9 @@ from django.db import models
 class WeatherData(models.Model):
     class Meta:
         db_table = "weather_data"
-        # unique_together = (("weather_station", "date"),)
         constraints = [
             models.UniqueConstraint(
-                fields=["weather_station", "date"],
-                name="unique_date_per_station",
+                fields=["weather_station", "date"], name="unique_date_per_station"
             )
         ]
 
