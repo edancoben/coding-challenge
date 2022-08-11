@@ -48,6 +48,7 @@ class IngestDataParent:
         engine = create_engine("sqlite:///db.sqlite3")
         # TODO find a shorter way to get table name
         # TODO add proper logging
+        # TODO check the primary key year for yield data that the index flag isn't messing things up
         try:
             df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
             num_rows_saved = len(df.index)
