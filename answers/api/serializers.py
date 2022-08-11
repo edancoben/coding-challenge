@@ -19,6 +19,7 @@ class YieldDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = YieldData
         fields = [
+            "id",
             "year",
             "total_harvested_grain",
         ]

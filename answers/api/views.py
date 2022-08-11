@@ -5,8 +5,6 @@ from api.serializers import (
 )
 from rest_framework import viewsets
 from .models import WeatherData, WeatherAnalysis, YieldData
-from rest_framework.response import Response
-from django.core.paginator import Paginator
 
 
 class WeatherDataViewSet(viewsets.ModelViewSet):
@@ -24,7 +22,7 @@ class WeatherDataViewSet(viewsets.ModelViewSet):
         if weather_station:
             kwargs["weather_station"] = weather_station
 
-        queryset = WeatherData.objects.filter(**kwargs)
+        queryset = WeatherData.objects.filter(**kwargs).order_by("id")
 
         return queryset
 
@@ -41,7 +39,7 @@ class YieldDataViewSet(viewsets.ModelViewSet):
         if year:
             kwargs["year"] = year
 
-        queryset = YieldData.objects.filter(**kwargs)
+        queryset = YieldData.objects.filter(**kwargs).order_by("id")
 
         return queryset
 
@@ -61,6 +59,6 @@ class WeatherAnalysisViewSet(viewsets.ModelViewSet):
         if weather_station:
             kwargs["weather_station"] = weather_station
 
-        queryset = WeatherAnalysis.objects.filter(**kwargs)
+        queryset = WeatherAnalysis.objects.filter(**kwargs).order_by("id")
 
         return queryset
