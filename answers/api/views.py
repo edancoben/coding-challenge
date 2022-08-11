@@ -1,12 +1,17 @@
-from django.shortcuts import render
+from api.serializers import (
+    WeatherDataSerializer,
+    YieldDataSerializer,
+    WeatherAnalysisSerializer,
+)
 from rest_framework import viewsets
 from .models import WeatherData, WeatherAnalysis, YieldData
 from rest_framework.response import Response
+from django.core.paginator import Paginator
 
-# TODO data should be paginated
+
 class WeatherDataViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
-    serializer_class = WeatherData
+    serializer_class = WeatherDataSerializer
 
     def get_queryset(self):
         query_params = self.request.query_params
@@ -21,12 +26,12 @@ class WeatherDataViewSet(viewsets.ModelViewSet):
 
         queryset = WeatherData.objects.filter(**kwargs)
 
-        return Response(queryset)
+        return queryset
 
 
 class YieldDataViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
-    serializer_class = YieldData
+    serializer_class = YieldDataSerializer
 
     def get_queryset(self):
         query_params = self.request.query_params
@@ -38,12 +43,12 @@ class YieldDataViewSet(viewsets.ModelViewSet):
 
         queryset = YieldData.objects.filter(**kwargs)
 
-        return Response(queryset)
+        return queryset
 
 
 class WeatherAnalysisViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
-    serializer_class = WeatherAnalysis
+    serializer_class = WeatherAnalysisSerializer
 
     def get_queryset(self):
         query_params = self.request.query_params
@@ -58,4 +63,4 @@ class WeatherAnalysisViewSet(viewsets.ModelViewSet):
 
         queryset = WeatherAnalysis.objects.filter(**kwargs)
 
-        return Response(queryset)
+        return queryset
