@@ -46,10 +46,10 @@ class IngestDataParent:
         engine = create_engine("sqlite:///db.sqlite3")
         # TODO find a shorter way to get table name
         try:
-            df.to_sql(model._meta.db_table, con=engine, if_exists="append")
-            print("num rows saved:", len(df.index))
-        except IntegrityError:
-            print("integrity error")
+            df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
+        #     print("num rows saved:", len(df.index))
+        # except IntegrityError:
+        #     print("integrity error")
         except Exception as e:
             print(e)
 
@@ -78,7 +78,7 @@ class IngestWeatherData(IngestDataParent):
         df["precipitation_of_day"] = df["precipitation_of_day"].apply(
             self._convert_null_vals
         )
-        df.set_index(["weather_station", "date"], inplace=True)
+        # df.set_index(["weather_station", "date"], inplace=True)
         return df
 
     def _format_date(self, date: int) -> str:
