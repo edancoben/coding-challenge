@@ -24,7 +24,7 @@ class YieldData(models.Model):
     class Meta:
         db_table = "yield_data"
 
-    year = models.IntegerField(primary_key=True)
+    year = models.IntegerField(unique=True)
     total_harvested_grain = models.IntegerField()
 
 

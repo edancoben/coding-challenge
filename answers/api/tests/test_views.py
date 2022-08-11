@@ -8,19 +8,12 @@ from api.serializers import (
     WeatherDataSerializer,
     YieldDataSerializer,
 )
-from api.models import WeatherData
+from api.models import WeatherData, YieldData, WeatherAnalysis
 
 
-class WeatherDataViewSetTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.url = "/api/weather/"
-        # cls.view_set = WeatherDataViewSet
-        # cls.expected_serializer = WeatherDataSerializer
-
+class ParentViewSetTests:
     def setUp(self):
         self.client = APIClient()
-        # self.client.force_authenticate()
 
     def test_get_data(self):
         row = WeatherData(weather_station="test", date="1985-01-01")
@@ -40,3 +33,24 @@ class WeatherDataViewSetTests(TestCase):
         self.assertEqual(response.status_code, 405)
         response = self.client.delete(self.url)
         self.assertEqual(response.status_code, 405)
+
+
+class WeatherDataViewSetTests(TestCase, ParentViewSetTests):
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = "/api/weather/"
+        cls.model = WeatherData
+
+
+class YieldDataViewSetTests:
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = "/api/yield/"
+        cls.model = YieldData
+
+
+class WeatherAnalysisViewSetTests:
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = "/api/weather/stats"
+        cls.model = WeatherAnalysis
