@@ -12,8 +12,8 @@ class Command(BaseCommand):
             YieldData.objects.all().delete()
 
         start = time.time()
-        # weather_data_ingestor = IngestWeatherData("wx_data")
-        # weather_data_ingestor.run()
+        weather_data_ingestor = IngestWeatherData("wx_data")
+        weather_data_ingestor.run()
 
         yield_data_ingestor = IngestYieldData("yld_data")
         yield_data_ingestor.run()

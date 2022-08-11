@@ -5,6 +5,7 @@ from .models import WeatherData, YieldData
 from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
 
 
@@ -14,12 +15,12 @@ class IngestDataParent:
 
     def run(self) -> None:
         file_paths = self._get_all_data_file_paths()
-        for file_path in file_paths:
+        for file_path in file_paths[:2]:
             df = self._load_data(file_path)
             df = self._clean_data(df)
             self._save_data_in_db(df)
             # print(df)
-        print(df)
+        # print(df)
 
     def _get_all_data_file_paths(self) -> list[str]:
         parent_path = Path(__file__).parents[2]
@@ -44,7 +45,13 @@ class IngestDataParent:
         model = self.data_model
         engine = create_engine("sqlite:///db.sqlite3")
         # TODO find a shorter way to get table name
-        df.to_sql(model._meta.db_table, con=engine, if_exists="append")
+        try:
+            df.to_sql(model._meta.db_table, con=engine, if_exists="append")
+            print("num rows saved:", len(df.index))
+        except IntegrityError:
+            print("integrity error")
+        except Exception as e:
+            print(e)
 
 
 class IngestWeatherData(IngestDataParent):
@@ -71,6 +78,7 @@ class IngestWeatherData(IngestDataParent):
         df["precipitation_of_day"] = df["precipitation_of_day"].apply(
             self._convert_null_vals
         )
+        df.set_index(["weather_station", "date"], inplace=True)
         return df
 
     def _format_date(self, date: int) -> str:
