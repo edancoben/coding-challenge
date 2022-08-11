@@ -90,3 +90,7 @@ class IngestYieldData(IngestDataParent):
         self.data_dir = data_dir
         self.col_names = ["year", "total_harvested_grain"]
         super().__init__()
+
+    def _clean_data(self, df: DataFrame) -> DataFrame:
+        df.set_index(["year"], inplace=True)
+        return df
