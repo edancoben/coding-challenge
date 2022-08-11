@@ -9,8 +9,7 @@ class WeatherData(models.Model):
         db_table = "weather_data"
         constraints = [
             models.UniqueConstraint(
-                fields=["weather_station", "date"],
-                name="unique_date_per_station",
+                fields=["weather_station", "date"], name="unique_date_per_station"
             )
         ]
 
@@ -25,5 +24,5 @@ class YieldData(models.Model):
     class Meta:
         db_table = "yield_data"
 
-    year = models.IntegerField(unique=True)
+    year = models.IntegerField(primary_key=True)
     total_harvested_grain = models.IntegerField()
