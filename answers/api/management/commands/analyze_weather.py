@@ -3,6 +3,9 @@ from django.core.management import call_command
 import time
 from api.problem_3_analysis import analyze_weather
 from api.models import WeatherAnalysis
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -16,7 +19,7 @@ class Command(BaseCommand):
         start = time.time()
         analyze_weather()
         end = time.time()
-        print("elapsed time: ", end - start)
+        logger.info("elapsed time: ", end - start)
 
     def add_arguments(self, parser):
         parser.add_argument("--d", action="store_true")

@@ -1,12 +1,13 @@
 from .models import WeatherData, WeatherAnalysis
 from django.db.models import Sum, Avg, IntegerField
 from django.db.models.functions import Round, ExtractYear, Cast
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def analyze_weather():
-    print("analyzing weather")
-    # TODO figure out using NULL for statistics that cannot be calculated? like do they want an entry for a
-    # weather station and year that doesn't have any data?
+    logger.info("analyzing weather")
     rows = (
         WeatherData.objects.all()
         .values("weather_station")
@@ -24,4 +25,4 @@ def analyze_weather():
     batch = [WeatherAnalysis(**row) for row in rows]
 
     WeatherAnalysis.objects.bulk_create(batch)
-    print("Num rows saved in WeatherAnalysis:", len(batch))
+    logger.info("Num rows saved in WeatherAnalysis:", len(batch))
