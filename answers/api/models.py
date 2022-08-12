@@ -3,7 +3,10 @@ from django.db import models
 
 # Create your models here.
 
-
+# unique constraint in place so we don't create duplicates
+# weather station is expected to be 11 chars from all txt file names
+# both date and weather station cannot be null
+# max_temp, mmin_temp, total_prec are all ints
 class WeatherData(models.Model):
     class Meta:
         db_table = "weather_data"
@@ -20,6 +23,8 @@ class WeatherData(models.Model):
     precipitation_of_day = models.IntegerField(null=True)
 
 
+# year is unique for as total exists for only one year
+# total harvested grain is int like in file
 class YieldData(models.Model):
     class Meta:
         db_table = "yield_data"
@@ -28,6 +33,12 @@ class YieldData(models.Model):
     total_harvested_grain = models.IntegerField()
 
 
+# for every year for every station is in constraint
+# same concepts as WeatherData for station/year
+# rest of the fields are Float types to have more data that seemed relevante
+#   ie 20 deg celsius seemed like a significant amount less info thant 20.3 avg deg celsius
+#   when comparing years
+# also nullable for statistics that cannot be calculated
 class WeatherAnalysis(models.Model):
     class Meta:
         db_table = "weather_analysis"

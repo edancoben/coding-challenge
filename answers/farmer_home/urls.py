@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from api.views import WeatherAnalysisViewSet
 
+# adding in stats path here as that was giving me trouble in apu.urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
