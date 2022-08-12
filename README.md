@@ -4,6 +4,8 @@ Hello!!
 
 dependencies in "requirements.txt"
 
+used sqlite3 as my database
+
 I left some commented out code in so you can see some extra steps in my thought process.
 Hope it's helpful!
 
