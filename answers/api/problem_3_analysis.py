@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# TODO proper logging
+
 def analyze_weather():
     logger.info("analyzing weather")
     rows = (
