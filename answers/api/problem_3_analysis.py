@@ -2,11 +2,9 @@ from .models import WeatherData, WeatherAnalysis
 from django.db.models import Sum, Avg, IntegerField
 from django.db.models.functions import Round, ExtractYear, Cast
 
-
+# TODO proper logging
 def analyze_weather():
     print("analyzing weather")
-    # TODO figure out using NULL for statistics that cannot be calculated? like do they want an entry for a
-    # weather station and year that doesn't have any data?
     rows = (
         WeatherData.objects.all()
         .values("weather_station")
