@@ -8,12 +8,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options["d"]:
             print("Deleting All Rows in Tables")
-            # WeatherData.objects.all().delete()
+            WeatherData.objects.all().delete()
             YieldData.objects.all().delete()
 
         start = time.time()
-        # weather_data_ingestor = IngestWeatherData("wx_data")
-        # weather_data_ingestor.run()
+        weather_data_ingestor = IngestWeatherData("wx_data")
+        weather_data_ingestor.run()
 
         yield_data_ingestor = IngestYieldData("yld_data")
         yield_data_ingestor.run()
