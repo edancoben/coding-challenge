@@ -45,18 +45,25 @@ class IngestDataParent:
     def _save_data_in_db(self, df: DataFrame) -> int:
         num_rows_saved = 0
         model = self.data_model
+
+        rows = df.to_dict(orient="records")
+        batch = [model(**row) for row in rows]
+
+        try:
+            model.objects.bulk_create(batch, batch_size=len(batch))
+            num_rows_saved = len(batch)
+        except Exception as e:
+            print(e)
+        return num_rows_saved
+
+    def _old_save_in_db(self, df: DataFrame) -> int:
+        num_rows_saved = 0
+        model = self.data_model
         engine = create_engine("sqlite:///db.sqlite3")
-        # TODO find a shorter way to get table name
-        # TODO add proper logging
-        # TODO check the primary key year for yield data that the index flag isn't messing things up
         try:
             df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
             num_rows_saved = len(df.index)
-        except IntegrityError as e:
-            # print("integrity error")
-            pass
-        except Exception as e:
-            # print(e)
+        except:
             pass
         return num_rows_saved
 
