@@ -14,13 +14,16 @@ logger = logging.getLogger(__name__)
 
 
 class IngestDataParent:
+    # skeleton incase I wanna add on later
     def __init__(self) -> None:
         pass
 
+    # main controller
     def run(self) -> None:
         logger.info(f"Starting Data Ingestor {type(self).__name__}")
         start = time.time()
         total_rows_saved = 0
+        # returns list of file paths
         file_paths = self._get_all_data_file_paths()
         for file_path in file_paths:
             df = self._load_data(file_path)
@@ -32,8 +35,10 @@ class IngestDataParent:
         logger.info(f"Process Runtime: {end - start} seconds")
 
     def _get_all_data_file_paths(self) -> list[str]:
+        # parents[2] so I can grab directories but also be similar to template
         parent_path = Path(__file__).parents[2]
         data_path = join(parent_path, self.data_dir)
+        # check to make sure every file I grab is a file and not a directory
         file_paths = [
             join(data_path, f) for f in listdir(data_path) if isfile(join(data_path, f))
         ]
@@ -44,12 +49,15 @@ class IngestDataParent:
         df = self._add_additional_cols(df=df, file_path=file_path)
         return df
 
+    # not needed for yield data so just returning
     def _add_additional_cols(self, df: DataFrame, file_path: str = None) -> DataFrame:
         return df
 
+    # not needed for yield data so just returning
     def _clean_data(self, df: DataFrame) -> DataFrame:
         return df
 
+    # using create engine with sql lite sped up code immensly
     def _save_data_in_db(self, df: DataFrame) -> int:
         num_rows_saved = 0
         model = self.data_model
@@ -96,6 +104,8 @@ class IngestWeatherData(IngestDataParent):
         weather_station = file_name.split(".txt")[0]
         return df.assign(weather_station=weather_station)
 
+    # formate date properly
+    # make sure all -9999 become null
     def _clean_data(self, df: DataFrame) -> DataFrame:
         df["date"] = df["date"].apply(self._format_date)
         df["max_temp_of_day"] = df["max_temp_of_day"].apply(self._convert_null_vals)

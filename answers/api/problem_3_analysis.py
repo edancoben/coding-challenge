@@ -24,6 +24,7 @@ def analyze_weather():
     )
 
     batch = [WeatherAnalysis(**row) for row in rows]
+    # can't create duplicates so logging how many rows we save to now if it was successful
     try:
         WeatherAnalysis.objects.bulk_create(batch)
         logger.info(f"Num rows saved in WeatherAnalysis: {len(batch)}")
