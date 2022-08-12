@@ -4,9 +4,6 @@ from api.problem_2_ingestion import IngestWeatherData, IngestYieldData
 from pathlib import Path
 from os.path import dirname, basename
 import pandas as pd
-import numpy as np
-
-# from os.path import isfile, join, basename
 
 # Create your tests here.
 class ParentDataIngestionTests:
@@ -25,7 +22,6 @@ class ParentDataIngestionTests:
 
         # expected output is post clean
         expected_input = pd.DataFrame(self.expected_save_input)
-        # print(len(expected_input.index))
 
         self.ingestor._save_data_in_db(expected_input)
         self.assertEqual(len(self.model.objects.all()), len(expected_input.index))

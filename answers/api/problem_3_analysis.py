@@ -3,11 +3,12 @@ from django.db.models import Sum, Avg, IntegerField
 from django.db.models.functions import Round, ExtractYear, Cast
 import logging
 
+logging.getLogger().setLevel(logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 def analyze_weather():
-    logger.info("analyzing weather")
+    logger.info("Starting Weather Analysis")
     rows = (
         WeatherData.objects.all()
         .values("weather_station")
@@ -23,6 +24,8 @@ def analyze_weather():
     )
 
     batch = [WeatherAnalysis(**row) for row in rows]
-
-    WeatherAnalysis.objects.bulk_create(batch)
-    logger.info("Num rows saved in WeatherAnalysis:", len(batch))
+    try:
+        WeatherAnalysis.objects.bulk_create(batch)
+        logger.info(f"Num rows saved in WeatherAnalysis: {len(batch)}")
+    except:
+        logger.info(f"Saving 0 rows to WeatherAnalysis Table")
