@@ -4,6 +4,9 @@ Hello!!
 
 dependencies in "requirements.txt"
 
+I left some commented out code in so you can see some extra steps in my thought process.
+Hope it's helpful!
+
 
 Problem 1:
 
@@ -35,5 +38,11 @@ GET ENDPOINTS:
 /api/weather
 /api/yield
 /api/weather/stats/ (need the slash at the end from my testing in postman for this specific route)
+
+FILTERS: code is looking for query params "date" or "weather_station" or "year" where present
+
+100 records retured per page
+can filter by date (ex: "1985-01-01") and weather_station (ex: "USC00110072") or year (ex: "2012") where present
 code is found in answers/api/views.py
+serializers in answers/api/serializers.py
 unit tests in answers/api/tests/test_views.py

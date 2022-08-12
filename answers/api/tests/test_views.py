@@ -2,7 +2,8 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from api.models import WeatherData, YieldData, WeatherAnalysis
 
-
+# parent class to reuse as much code as possible
+#   many of the get requests are checking the same things and edge cases
 class ParentViewSetTests:
     def setUp(self):
         self.client = APIClient()

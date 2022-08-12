@@ -6,7 +6,9 @@ from api.serializers import (
 from rest_framework import viewsets
 from .models import WeatherData, WeatherAnalysis, YieldData
 
-
+# all views are pretty much the same except for their specific filters
+#   relating to station id or date/year
+# only get methods allowed
 class WeatherDataViewSet(viewsets.ModelViewSet):
     http_method_names = ["get"]
     serializer_class = WeatherDataSerializer
