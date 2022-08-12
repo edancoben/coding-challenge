@@ -22,7 +22,7 @@ class IngestDataParent:
         start = time.time()
         total_rows_saved = 0
         file_paths = self._get_all_data_file_paths()
-        for file_path in file_paths[:1]:
+        for file_path in file_paths:
             df = self._load_data(file_path)
             df = self._clean_data(df)
             num_rows_saved = self._save_data_in_db(df)
@@ -58,7 +58,9 @@ class IngestDataParent:
             df.to_sql(model._meta.db_table, con=engine, if_exists="append", index=False)
             num_rows_saved = len(df.index)
         except Exception as e:
-            logger.exception(e)
+            # passing because logs are blowing up my console
+            pass
+            # logger.exception(e)
         return num_rows_saved
 
     # older method but was having issue with saving nan valus and df.to_sql is ~5 times faster
